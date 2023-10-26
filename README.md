@@ -9,7 +9,7 @@ This project seeks to quantify the size and diversity of the commons--the
 collection of works that are openly licensed or in the public domain.
 
 
-## Code of Conduct
+## Code of conduct
 
 [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md):
 > The Creative Commons team is committed to fostering a welcoming community.
@@ -27,7 +27,6 @@ collection of works that are openly licensed or in the public domain.
 See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 
-
 ## Development
 
 
@@ -35,153 +34,93 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 This repository uses [pipenv][pipenvdocs] to manage the required Python
 modules:
-- Linux: [Installing Pipenv][pipenvinstall]
-- macOS:
-  1. Install [Homebrew][homebrew]
-  2. Install pipenv:
-        ```
+1. Install `pipenv`:
+   - Linux: [Installing Pipenv][pipenvinstall]
+   - macOS:
+     1. Install [Homebrew][homebrew]
+     2. Install pipenv:
+        ```shell
         brew install pipenv
         ```
+   - Windows: [Installing Pipenv][pipenvinstall]
+2. Create the Python virtual environment and install prerequisites using
+   `pipenv`:
+    ```shell
+    pipenv sync --dev
+    ```
 
 [pipenvdocs]: https://pipenv.pypa.io/en/latest/
+[pipenvinstall]: https://pipenv.pypa.io/en/latest/installation/
 [homebrew]: https://brew.sh/
-[pipenvinstall]: https://pipenv.pypa.io/en/latest/install/#installing-pipenv
 
 
-### Tooling
+### Running scripts that require client cedentials
+
+To successfully run scripts that require client credentials, you will need to
+follow these steps:
+1. Copy the contents of the `env.example` file in the script's directory to
+   `.env`:
+    ```shell
+    cp env.example .env
+    ```
+2. Uncomment the variables in the `.env` file and assign values as needed. See
+   [`sources.md`](sources.md) on how to get credentials:
+    ```
+    GOOGLE_API_KEYS=your_api_key
+    PSE_KEY=your_pse_key
+    ```
+3. Save the changes to the `.env` file.
+4. You should now be able to run scripts that require client credentials
+   without any issues.
+
+
+### Static analysis
+
+The [`dev/tools.sh`][tools-sh] helper script runs the static analysis tools
+(`black`, `flake8`, and `isort`):
+```shell
+./dev/tools.sh
+```
+
+It can also accept command-line arguments to specify specific files or
+directories to check:
+```shell
+./dev/tools.sh PATH/TO/MY/FILE.PY
+```
+
+[tools-sh]: /dev/tools.sh
+
+
+### Resources
 
 - **[Python Guidelines — Creative Commons Open Source][ccospyguide]**
-- [Black][black]: the uncompromising Python code formatter
-- [flake8][flake8]: a python tool that glues together pep8, pyflakes, mccabe,
-  and third-party plugins to check the style and quality of some python code.
-- [isort][isort]: A Python utility / library to sort imports.
+- [Black][black]: _the uncompromising Python code formatter_
+- [flake8][flake8]: _a python tool that glues together pep8, pyflakes, mccabe,
+  and third-party plugins to check the style and quality of some python code._
+- [isort][isort]: _A Python utility / library to sort imports_
+  - (It doesn't import any libraries, it only sorts and formats them.)
+- [ppypa/pipenv][pipenv]: _Python Development Workflow for Humans._
 
 [ccospyguide]: https://opensource.creativecommons.org/contributing-code/python-guidelines/
 [black]: https://github.com/psf/black
 [flake8]: https://gitlab.com/pycqa/flake8
 [isort]: https://pycqa.github.io/isort/
+[pipenv]: https://github.com/pypa/pipenv
 
 
-## Data Sources
+### GitHub Actions
+
+The [`.github/workflows/python_static_analysis.yml`][workflow-static-analysis]
+GitHub Actions workflow performs static analysis (`black`, `flake8`, and
+`isort`) on committed changes. The workflow is triggered automatically when you
+push changes to the main branch or open a pull request.
+
+[workflow-static-analysis]: .github/workflows/python_static_analysis.yml
 
 
-### CC Legal Tools
+## Data sources
 
-- [`legal-tool-paths.txt`](google_custom_search/legal-tool-paths.txt)
-  - A `.txt` provided by Timid Robot containing all legal tool paths. The data
-    from Google Custom Search will only cover 50+ general, most significant
-    categories of CC License for data collection quota constraint. As an
-    additional note, the order of precedence of license the collected data's
-    first column is sorted due to intermediate data analysis progress.
-    - [add list of all current CC legal tool paths by TimidRobot · Pull Request
-      #7 · creativecommons/quantifying][pr7]
-
-[pr7]: https://github.com/creativecommons/quantifying/pull/7
-
-
-### Flickr
-
-- The Flickr API exposes identifiers for users, photos, photosets and other
-  uniquely identifiable objects.
-- The Flickr API consists of a set of callable methods, and some API endpoints.
-- For more detailed description, visit: [API documentation - Flickr
-  Services](https://www.flickr.com/services/api/).
-- The `hs.csv` file is a sample CSV of pulled data. Ideally the script will
-  generate final data CSVs.
-- Each license will have a CSV to save the data.
-- Due to memory limit, the license CSVs are not pushed into github.
-
-
-### Google Custom Search JSON API
-
-- The Custom Search JSON API allows user-defined detailed query and access
-  towards related query data using a programmable search engine.
-  - [Custom Search JSON API Reference | Programmable Search Engine | Google
-    Developers][googlejsonapi]
-  - [Method: cse.list | Custom Search JSON API | Google Developers][cselist]
-- [`google_countries.tsv`](google_custom_search/google_countries.txt)
-  - Created by directly copy and pasting the `cr` parameter list from the
-    following link into a `.tsv` file as there were no reliable algorithmic way
-    for retrieving such data found in the process so far. The script itself
-    will take care of the formatting and country-selection process.
-    - [Country Collection Values | JSON API reference | Programmable Search
-      Engine | Google Developers][googlecountry]
-- [`google_lang.txt`](google_custom_search/google_lang.txt)
-  - Created by directly copy and pasting the `lr` parameter list from the
-    following link into a `.txt` file as there were no reliable algorithmic way
-    for retrieving such data found in the process so far. The script itself
-    will take care of the data formatting and language-selection process.
-    - [Parameter: lr | Method: cse.list | Custom Search JSON API | Google
-      Developers][googlelang]
-
-[googlejsonapi]: https://developers.google.com/custom-search/v1
-[cselist]: https://developers.google.com/custom-search/v1/reference/rest/v1/cse/list
-[googlecountry]: https://developers.google.com/custom-search/docs/json_api_reference#countryCollections
-[googlelang]: https://developers.google.com/custom-search/v1/reference/rest/v1/cse/list#body.QUERY_PARAMETERS.lr
-
-
-### Internet Archive Python Interface
-
-A python interface to archive.org to achieve API requests towards internet
-archive.
-- [`internetarchive.Search` - Internetarchive: A Python Interface to
-  archive.org][iasearch]
-
-[iasearch]: https://internetarchive.readthedocs.io/en/stable/internetarchive.html#internetarchive.Search
-
-
-### The Metropolitan Museum of Art Collection API
-
-An API endpoint for receiving Metropolitan Muesum of Art Collection's
-CC-Licensed works.
-
-[Latest Updates | The Metropolitan Museum of Art Collection API][metapi]:
-> The Metropolitan Museum of Art provides select datasets of information on
-> more than 470,000 artworks in its Collection for unrestricted commercial and
-> noncommercial use. To the extent possible under law, The Metropolitan Museum
-> of Art has waived all copyright and related or neighboring rights to this
-> dataset using the [Creative Commons Zero][cc-zero] license.
-
-[metapi]: https://metmuseum.github.io/
-[cc-zero]: https://creativecommons.org/publicdomain/zero/1.0/
-
-
-### Vimeo API
-
-The Vimeo API allows users to perform filtered, advanced search on Vimeo
-videos.
-- [Getting Started with the Vimeo API][vimeostart]
-  - [Search for videos - Vimeo API Reference: Videos][vimeoapisearch]
-
-[vimeostart]: https://developer.vimeo.com/api/guides/start
-[vimeoapisearch]: https://developer.vimeo.com/api/reference/videos#search_videos
-
-
-### MediaWiki API
-
-- The MediaWiki Action API is a web service that allows access to some wiki
-  features like authentication, page operations, and search. It can provide
-  meta information about the wiki and the logged-in user.
-  - Example query: https://commons.wikimedia.org/w/api.php?action=query&cmtitle=Category:CC-BY&list=categorymembers
-- [`language-codes_csv.csv`](wikipedia/language-codes_csv.csv)
-  - A list of language codes in ISO 639-1 Format to access statistics of each
-    wikipedia main page across different languages. In the script, this file is
-    named as `language-codes_csv` to minimize the amount of manual work
-    required for running the script provided the same language encoding file.
-    The user would have to rename the header and file name of their `.csv` ISO
-    code list according to the concurrent file on Github if they would like to
-    use some list other than the concurrent one.
-  - This file that this script uses can be downloaded from:
-    https://datahub.io/core/language-codes
-
-
-### Youtube Data API
-
-An API from YouTube for platform users to upload videos, adjust video
-parameters, and obtain search results.
-- [Search: list | YouTube Data API | Google Developers][youtubeapi]
-
-[youtubeapi]: https://developers.google.com/youtube/v3/docs/search/list
+Kindly visit the [`sources.md`](sources.md) file for it.
 
 
 ## History
@@ -189,12 +128,13 @@ parameters, and obtain search results.
 For information on past efforts, see [`history.md`](history.md).
 
 
-## Copying & License
+## Copying & license
 
 
 ### Code
 
-[`LICENSE`](LICENSE): the code within this repository is licensed under the Expat/[MIT][mit] license.
+[`LICENSE`](LICENSE): the code within this repository is licensed under the
+Expat/[MIT][mit] license.
 
 [mit]: http://www.opensource.org/licenses/MIT "The MIT License | Open Source Initiative"
 
