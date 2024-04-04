@@ -14,6 +14,7 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
+print("hello world!")
 sys.path.append(".")
 # First-party/Local
 import quantify  # noqa: E402
