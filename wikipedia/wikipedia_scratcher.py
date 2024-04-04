@@ -10,11 +10,15 @@ import sys
 from requests.adapters import HTTPAdapter
 
 # Third-party
-import pandas as pd
+
+from requests.adapters import HTTPAdapter
 import requests
 
-from urllib3.util.retry import Retry
+import pandas as pd
 
+
+from urllib3.util.retry import Retry
+print("hello world!")
 sys.path.append(".")
 # First-party/Local
 import quantify  # noqa: E402
