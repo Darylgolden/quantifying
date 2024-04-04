@@ -7,13 +7,18 @@ This file is dedicated to obtain a .csv record report for Wikipedia Data.
 import os
 import traceback
 import sys
-
+from requests.adapters import HTTPAdapter
 
 # Third-party
-
-import requests
 import pandas as pd
 from requests.adapters import HTTPAdapter
+import requests
+
+
+
+
+print("blahblah")
+
 from urllib3.util.retry import Retry
 print("hello world!")
 sys.path.append(".")
