@@ -21,7 +21,7 @@ import quantify  # noqa: E402
 
 # Setup paths, Date and LOGGER using quantify.setup()
 _, PATH_WORK_DIR, PATH_DOTENV, DATETIME_TODAY, LOGGER = quantify.setup(
-    __file__
+    __file__ 
 )
 
 # Load environment variables

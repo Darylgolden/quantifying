@@ -5,8 +5,9 @@ This file is dedicated to obtain a .csv record report for Wikipedia Data.
 
 # Standard library
 import os
-import sys
 import traceback
+import sys
+
 
 # Third-party
 import pandas as pd
