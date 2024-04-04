@@ -5,16 +5,15 @@ This file is dedicated to obtain a .csv record report for Wikipedia Data.
 
 # Standard library
 import os
-import traceback
 import sys
-
+import traceback
 
 # Third-party
-
-import requests
 import pandas as pd
+import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+
 print("hello world!")
 sys.path.append(".")
 # First-party/Local
